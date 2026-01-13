@@ -12,7 +12,7 @@ func main() {
 	r := LoadRoutes()
 
 	dbConfig := dbConfig{
-		url:          "/home/leonardo-costa/controle_financeiro/internal/database/db",
+		url:          "/home/leonardo-costa/controle_financeiro/internal/database/producao.db",
 		maxOpenConns: 10,
 		maxIdleConns: 4,
 		maxIdleTime:  time.Second * 20,
@@ -31,7 +31,7 @@ func main() {
 		config.db.maxIdleTime,
 	)
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 	}
 	defer db.Close()
 
@@ -42,5 +42,9 @@ func main() {
 		repository: repository,
 	}
 
-	log.Fatal(application.run())
+	if err := application.run(); err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("server has started port: %s", config.api_port)
 }

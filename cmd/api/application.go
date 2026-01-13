@@ -2,7 +2,7 @@ package main
 
 import (
 	"app/internal/repositories"
-	"log"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -37,7 +37,11 @@ func (app *application) run() error {
 		IdleTimeout:  time.Minute,
 	}
 
-	log.Printf("server has started at: %s", app.config.api_port)
+	fmt.Printf("server has started at: %s\n", app.config.api_port)
 
-	return server.ListenAndServe()
+	if err := server.ListenAndServe(); err != nil {
+		return err
+	}
+
+	return nil
 }

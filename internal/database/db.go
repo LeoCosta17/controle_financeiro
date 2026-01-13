@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"log"
 	"time"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func Init(url string, maxOpenConns, maxIdleConns int, maxIdleTime time.Duration) (*sql.DB, error) {
