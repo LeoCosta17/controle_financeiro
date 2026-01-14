@@ -3,16 +3,15 @@ package main
 import (
 	"app/internal/database"
 	"app/internal/repositories"
+	"app/internal/services"
 	"log"
 	"time"
 )
 
 func main() {
 
-	r := LoadRoutes()
-
 	dbConfig := dbConfig{
-		url:          "/home/leonardo-costa/controle_financeiro/internal/database/producao.db",
+		url:          "/home/leonardo-costa/Documentos/producao.db",
 		maxOpenConns: 10,
 		maxIdleConns: 4,
 		maxIdleTime:  time.Second * 20,
@@ -21,7 +20,6 @@ func main() {
 	config := config{
 		api_port: ":5000",
 		db:       dbConfig,
-		router:   *r,
 	}
 
 	db, err := database.Init(
@@ -36,13 +34,16 @@ func main() {
 	defer db.Close()
 
 	repository := repositories.NewRepository(db)
+	services := services.NewServices(repository)
+	r := LoadRoutes(services)
 
 	application := application{
 		config:     config,
 		repository: repository,
+		services:   services,
 	}
 
-	if err := application.run(); err != nil {
+	if err := application.run(r); err != nil {
 		log.Fatal(err)
 	}
 

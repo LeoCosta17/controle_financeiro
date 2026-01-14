@@ -10,13 +10,13 @@ type User struct {
 }
 
 func (u *User) ValidateUser() error {
-	if err := validateData(u); err != nil {
+	if err := validateUserData(u); err != nil {
 		return err
 	}
 	return nil
 }
 
-func validateData(u *User) error {
+func validateUserData(u *User) error {
 	if u.Name == "" {
 		return errors.New("user name required")
 	}

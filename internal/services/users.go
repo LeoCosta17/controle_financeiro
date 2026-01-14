@@ -2,15 +2,32 @@ package services
 
 import (
 	"app/internal/models"
+	"app/internal/repositories"
 )
 
-type userService struct {
+type UserService struct {
+	repo repositories.Repository
 }
 
-func NewUserService() userService {
-	return userService{}
+func (s *UserService) Create(u models.User) (models.User, error) {
+	if err := u.ValidateUser(); err != nil {
+		return models.User{}, err
+	}
+
+	u, err := s.repo.Users.Create(u)
+	if err != nil {
+		return models.User{}, err
+	}
+
+	return u, nil
 }
 
-func (s *userService) CreateUser(u models.User) (models.User, error) {
-	return models.User{}, nil
+func (s *UserService) GetAll() ([]models.User, error) {
+
+	users, err := s.repo.Users.GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }

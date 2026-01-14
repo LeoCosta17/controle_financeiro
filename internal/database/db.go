@@ -9,7 +9,7 @@ import (
 )
 
 func Init(url string, maxOpenConns, maxIdleConns int, maxIdleTime time.Duration) (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "")
+	db, err := sql.Open("sqlite3", url)
 	if err != nil {
 		log.Fatalf("error open db: %s", err)
 	}

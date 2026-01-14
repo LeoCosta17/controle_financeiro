@@ -2,6 +2,7 @@ package main
 
 import (
 	"app/internal/repositories"
+	"app/internal/services"
 	"fmt"
 	"net/http"
 	"time"
@@ -12,12 +13,12 @@ import (
 type application struct {
 	config     config
 	repository repositories.Repository
+	services   services.Services
 }
 
 type config struct {
 	api_port string
 	db       dbConfig
-	router   chi.Mux
 }
 
 type dbConfig struct {
@@ -27,11 +28,11 @@ type dbConfig struct {
 	maxIdleTime  time.Duration
 }
 
-func (app *application) run() error {
+func (app *application) run(r *chi.Mux) error {
 
 	server := &http.Server{
 		Addr:         app.config.api_port,
-		Handler:      &app.config.router,
+		Handler:      r,
 		WriteTimeout: time.Second * 30,
 		ReadTimeout:  time.Second * 10,
 		IdleTimeout:  time.Minute,
