@@ -3,6 +3,7 @@ package main
 import (
 	"app/internal/repositories"
 	"app/internal/services"
+	"database/sql"
 	"fmt"
 	"net/http"
 	"time"
@@ -45,4 +46,39 @@ func (app *application) run(r *chi.Mux) error {
 	}
 
 	return nil
+}
+
+func (app *application) initTables(db *sql.DB) error {
+
+	query := `
+		CREATE TABLE IF NOT EXISTS "users" (
+		"id"	INTEGER,
+		"name"	TEXT NOT NULL,
+		"email"	TEXT NOT NULL UNIQUE,
+		"password"	TEXT NOT NULL,
+		PRIMARY KEY("id" AUTOINCREMENT)
+	)`
+
+	_, err := db.Exec(query)
+	if err != nil {
+		return err
+	}
+
+	query = `
+		CREATE TABLE IF NOT EXISTS "suppliers" (
+		"id"	INTEGER,
+		"name"	TEXT NOT NULL UNIQUE,
+		"email"	TEXT UNIQUE,
+		"telephone"	TEXT UNIQUE,
+		"document" TEXT UNIQUE,
+		PRIMARY KEY("id" AUTOINCREMENT)
+	)
+	`
+	_, err = db.Exec(query)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }

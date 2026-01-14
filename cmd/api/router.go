@@ -21,6 +21,7 @@ func LoadRoutes(s services.Services) *chi.Mux {
 	r.Get("/health", handlers.Health.APIHealth)
 	r.Post("/users", handlers.Users.Create)
 	r.Get("/users", handlers.Users.GetAll)
+	r.Post("/suppliers", handlers.Suppliers.Create)
 
 	return r
 }

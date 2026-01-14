@@ -10,10 +10,14 @@ type Repository struct {
 		Create(models.User) (models.User, error)
 		GetAll() ([]models.User, error)
 	}
+	Suppliers interface {
+		Create(models.Supplier) (models.Supplier, error)
+	}
 }
 
 func NewRepository(db *sql.DB) Repository {
 	return Repository{
-		Users: &UserRepository{db},
+		Users:     &UserRepository{db: db},
+		Suppliers: &SupplierRepository{db: db},
 	}
 }

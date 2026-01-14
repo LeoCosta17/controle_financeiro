@@ -10,6 +10,9 @@ type Handler struct {
 		Create(http.ResponseWriter, *http.Request)
 		GetAll(http.ResponseWriter, *http.Request)
 	}
+	Suppliers interface {
+		Create(http.ResponseWriter, *http.Request)
+	}
 	Health interface {
 		APIHealth(http.ResponseWriter, *http.Request)
 	}
@@ -17,7 +20,8 @@ type Handler struct {
 
 func NewHandlers(s services.Services) *Handler {
 	return &Handler{
-		Users:  &UserHandler{services: s},
-		Health: &HealtHanlder{},
+		Users:     &UserHandler{services: s},
+		Suppliers: &SuppliersHandler{services: s},
+		Health:    &HealtHanlder{},
 	}
 }

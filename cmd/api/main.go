@@ -43,6 +43,10 @@ func main() {
 		services:   services,
 	}
 
+	if err := application.initTables(db); err != nil {
+		log.Fatal(err)
+	}
+
 	if err := application.run(r); err != nil {
 		log.Fatal(err)
 	}

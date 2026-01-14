@@ -10,10 +10,14 @@ type Services struct {
 		Create(models.User) (models.User, error)
 		GetAll() ([]models.User, error)
 	}
+	Suppliers interface {
+		Create(models.Supplier) (models.Supplier, error)
+	}
 }
 
 func NewServices(repository repositories.Repository) Services {
 	return Services{
-		Users: &UserService{repository},
+		Users:     &UserService{repository},
+		Suppliers: &SupplierService{repository},
 	}
 }
