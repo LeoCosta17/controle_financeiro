@@ -17,6 +17,9 @@ type Repository struct {
 		Create(models.Costumer) (models.Costumer, error)
 		GetAll() ([]models.Costumer, error)
 	}
+	Products interface {
+		Create(models.Product) (models.Product, error)
+	}
 }
 
 func NewRepository(db *sql.DB) Repository {
@@ -24,5 +27,6 @@ func NewRepository(db *sql.DB) Repository {
 		Users:     &UserRepository{db: db},
 		Suppliers: &SupplierRepository{db: db},
 		Costumers: &CostumerRepository{db: db},
+		Products:  &ProductRepository{db: db},
 	}
 }

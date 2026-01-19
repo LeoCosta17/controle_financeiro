@@ -17,6 +17,9 @@ type Services struct {
 		Create(models.Costumer) (models.Costumer, error)
 		GetAll() ([]models.Costumer, error)
 	}
+	Products interface {
+		Create(models.Product) (models.Product, error)
+	}
 }
 
 func NewServices(repository repositories.Repository) Services {
@@ -24,5 +27,6 @@ func NewServices(repository repositories.Repository) Services {
 		Users:     &UserService{repository},
 		Suppliers: &SupplierService{repository},
 		Costumers: &CostumerServices{repository},
+		Products:  &ProductServices{repository},
 	}
 }
