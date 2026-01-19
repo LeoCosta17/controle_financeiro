@@ -79,6 +79,22 @@ func (app *application) initTables(db *sql.DB) error {
 		return err
 	}
 
+	query = `
+		CREATE TABLE IF NOT EXISTS "costumers"(
+		"id" INTEGER,
+		"name" TEXT NOT NULL UNIQUE,
+		"email" TEXT UNIQUE,
+		"telephone" TEXT UNIQUE,
+		"document" TEXT UNIQUE,
+		PRIMARY KEY("id" AUTOINCREMENT)	
+		)
+	`
+
+	_, err = db.Exec(query)
+	if err != nil {
+		return err
+	}
+
 	return nil
 
 }
