@@ -9,7 +9,7 @@ type CostumerRepository struct {
 	db *sql.DB
 }
 
-func (c *CostumerRepository) Create(costumer models.Costumer) (models.Costumer, error) {
+func (r *CostumerRepository) Create(costumer models.Costumer) (models.Costumer, error) {
 
 	query := `
 		INSERT INTO costumers (name, email, telephone, document)
@@ -17,7 +17,7 @@ func (c *CostumerRepository) Create(costumer models.Costumer) (models.Costumer, 
 		RETURNING id
 	`
 
-	if err := c.db.QueryRow(
+	if err := r.db.QueryRow(
 		query,
 		costumer.Name,
 		costumer.Email,
@@ -30,4 +30,37 @@ func (c *CostumerRepository) Create(costumer models.Costumer) (models.Costumer, 
 	}
 
 	return costumer, nil
+}
+
+func (r *CostumerRepository) GetAll() ([]models.Costumer, error) {
+	query := `
+		SELECT id, name, email, telephone, document FROM costumers
+	`
+
+	rows, err := r.db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var costumers []models.Costumer
+
+	for rows.Next() {
+
+		var costumer models.Costumer
+
+		if err := rows.Scan(
+			&costumer.ID,
+			&costumer.Name,
+			&costumer.Email,
+			&costumer.Telephone,
+			&costumer.Document,
+		); err != nil {
+			return nil, err
+		}
+
+		costumers = append(costumers, costumer)
+	}
+
+	return costumers, nil
 }

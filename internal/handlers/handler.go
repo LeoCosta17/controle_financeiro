@@ -12,6 +12,7 @@ type Handler struct {
 	}
 	Costumers interface {
 		Create(http.ResponseWriter, *http.Request)
+		GetAll(http.ResponseWriter, *http.Request)
 	}
 	Suppliers interface {
 		Create(http.ResponseWriter, *http.Request)

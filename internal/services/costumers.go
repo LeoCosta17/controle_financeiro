@@ -22,3 +22,13 @@ func (s *CostumerServices) Create(costumer models.Costumer) (models.Costumer, er
 
 	return costumer, nil
 }
+
+func (s *CostumerServices) GetAll() ([]models.Costumer, error) {
+
+	costumers, err := s.repo.Costumers.GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	return costumers, nil
+}

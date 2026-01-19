@@ -15,6 +15,7 @@ type Services struct {
 	}
 	Costumers interface {
 		Create(models.Costumer) (models.Costumer, error)
+		GetAll() ([]models.Costumer, error)
 	}
 }
 

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	httpresponse "app/internal/HTTPResponse"
 	"app/internal/models"
 	"app/internal/services"
 	"encoding/json"
@@ -26,14 +27,16 @@ func (c *CostumersHandler) Create(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))
 	}
 
-	data, err := json.Marshal(costumer)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
-	}
-
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(data))
+	httpresponse.HTTPResponseOK(w, http.StatusCreated, costumer)
 }
 
-func (c *CostumersHandler) GetAll(w http.ResponseWriter, r *http.Request)
+func (c *CostumersHandler) GetAll(w http.ResponseWriter, r *http.Request) {
+
+	costumers, err := c.services.Costumers.GetAll()
+	if err != nil {
+		httpresponse.HTTPResponseError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	httpresponse.HTTPResponseOK(w, http.StatusOK, costumers)
+}
